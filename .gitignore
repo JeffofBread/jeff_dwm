@@ -20,9 +20,6 @@ build/
 
 ### Ignore user configs
 
-#dwmblocks
-dwmblocks/config/blocks.h
-
 #jdwm
 dwm/config/autorun.h
 dwm/config/config.h

@@ -38,12 +38,6 @@ JDWM_RESOURCES_DIR="$JDWM_DIR/resources"
 
 ########################################################
 
-DWM_BLOCKS_DIR="$PARENT_DIR/dwmblocks"
-DWM_BLOCKS_CONFIG_DIR="$DWM_BLOCKS_DIR/config"
-DWM_BLOCKS_SCRIPTS_DIR="$DWM_BLOCKS_DIR/scripts"
-
-########################################################
-
 JDWM_MAN_INSTALL_DIR=""
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     JDWM_MAN_INSTALL_DIR="$SHARE_DIR/man"
@@ -226,7 +220,6 @@ jdwm_link(){
     check_and_link "$JDWM_CONFIG_DIR/binds" "binds"
     check_and_link "$JDWM_CONFIG_DIR/config" "config"
     check_and_link "$JDWM_CONFIG_DIR/keydefs" "keydefs"
-    check_and_link "$DWM_BLOCKS_CONFIG_DIR/blocks" "blocks"
 
     if [ -L "$SHARE_DIR/jdwm" ] && [ -d "$SHARE_DIR/jdwm" ]; then
         sudo rm -f $SHARE_DIR/jdwm
@@ -281,18 +274,6 @@ jdwm_wallpapers_install(){
         echo "Cloning jdwm_wallpapers repo into $JDWM_WALLPAPER_DIR"
         git clone https://github.com/JeffofBread/jdwm.git -b wallpapers $JDWM_WALLPAPER_DIR
     fi
-}
-
-dwm_blocks_scripts_install(){
-    echo -e "\n|--------- dwmblocks scripts ---------|\n"
-    copyexamplescripts "$DWM_BLOCKS_SCRIPTS_DIR "
-    echo -e "\ndwmblocks scripts are being installed to $BIN_INSTALL_DIR from $DWM_BLOCKS_SCRIPTS_DIR"
-    echo -e "dwmblocks scripts being installed:\n"
-    cd $DWM_BLOCKS_SCRIPTS_DIR 
-    sudo chmod -R 755 ./
-    sudo cp -f *.sh $BIN_INSTALL_DIR
-    ls | grep -E '\.sh$' | sed -e 's/^/     #) /'
-    echo ""
 }
 
 rofi_config_install(){
@@ -388,11 +369,6 @@ print_help(){
     echo "                                      ~/.config/jdwm/wallpapers and "
     echo "                                      symlinks to it in /jdwm/dwm/themes/"
     echo ""
-    echo "   -bs, --dwmblocks-scripts           Installs jdwm's dwmblocks"
-    echo "                                      script files, meaning any .sh files"
-    echo "                                      found in/jdwm/dwmblocks/scripts/,"
-    echo "                                      to /usr/local/bin/"
-    echo ""
     echo "   -rc, --rofi-config                 Installs jdwm's rofi config file"
     echo "                                      (/jdwm/rofi/config.rasi) to"
     echo "                                      ~/.config/rofi/config.rasi"
@@ -416,9 +392,8 @@ print_usage(){
     echo "       [-ja] [--jdwm-aliases] [-jb] [--jdwm-binaries]"
     echo "       [-jd] [--jdesktop-file] [-jl] [--jdwm-link]"
     echo "       [-jm] [--jdwm-manual] [-js] [--jdwm-scripts]"
-    echo "       [-jw] [--jdwm-wallpapers] [-bs] [--dwmblocks-scripts]"
-    echo "       [-rc] [--rofi-config] [-rs] [--rofi-scripts] [-rt]"
-    echo "       [--rofi-themes]"
+    echo "       [-jw] [--jdwm-wallpapers] [-rc] [--rofi-config]"
+    echo "       [-rs] [--rofi-scripts] [-rt] [--rofi-themes]"
     echo ""  
 }
 
@@ -474,11 +449,6 @@ while [[ $# -gt 0 ]]; do
             DEFAULT_INSTALL=0
             shift
             ;;
-        -bs|--dwmblocks-scripts)  # Only installs dwmblocks scripts
-            dwm_blocks_scripts_install
-            DEFAULT_INSTALL=0
-            shift
-            ;;
         -rc|--rofi-config)  # Only installs rofi config
             rofi_config_install
             DEFAULT_INSTALL=0
@@ -526,7 +496,6 @@ if [[ $DEFAULT_INSTALL -eq 1 ]]; then
     jdwm_man_page_install
     jdwm_scripts_install
     jdwm_wallpapers_install
-    dwm_blocks_scripts_install
     rofi_config_install
     rofi_scripts_install
     rofi_theme_install

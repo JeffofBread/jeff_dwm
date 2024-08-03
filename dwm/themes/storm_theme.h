@@ -17,7 +17,7 @@ static const char *colors[][4] = {
 
     // Bar                  text        background
     [SchemeSystray]     = { lightblue,  darkblue },   // Systray
-    [SchemeStatus]      = { lightblue,  darkblue },   // Statusbar (dwmblocks)
+    [SchemeStatus]      = { lightblue,  darkblue },   // Statusbar
     [SchemeTagsSel]     = { orange,     darkblue },   // Tagbar left selected
     [SchemeTagsNorm]    = { lightblue,  darkblue },   // Tagbar left unselected
     [SchemeInfoSel]     = { lightblue,  darkblue },   // infobar middle selected

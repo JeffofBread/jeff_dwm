@@ -41,13 +41,13 @@ Below are some examples of how these can be used and combined:
 ```
 </details>
 
-<details><summary><b>Example: Only install jdwm scripts, dwmblocks scripts, and rofi scripts</b></summary>
+<details><summary><b>Example: Only install jdwm and rofi scripts</b></summary>
 
 ```bash
-./install -js -bs -rs
+./install -js -rs
 ```
 ```bash
-./install --jdwm-scripts --dwmblocks-scripts --rofi-scripts
+./install --jdwm-scripts --rofi-scripts
 ```
 </details>
 
@@ -55,8 +55,8 @@ Below are some examples of how these can be used and combined:
 
 **Notes before you uninstall:**
  Please make sure you know what is being removed by the script and dont accidentally remove something you intended to keep. The script (by default) will remove all of the what is listed below, but that can be adjuste with flag arguments ().
- - jdwm binaries (`jdwm`, `dwm-msg`, and `dwmblocks`) from `/usr/local/bin/`
- - All scripts (with the `.sh` extension) present in `/jdwm/dwm/scripts/`, `/jdwm/dwmblocks/scripts/`, and `/jdwm/rofi/scripts/`, from `/usr/local/bin/`
+ - jdwm binaries (`jdwm` and `dwm-msg`) from `/usr/local/bin/`
+ - All scripts (with the `.sh` extension) present in `/jdwm/dwm/scripts/` and `/jdwm/rofi/scripts/`, from `/usr/local/bin/`
  - Any and all files present in `~/.config/jdwm/`
  - Pathing symlink `/usr/local/share/jdwm`
  - jdwm manual (`/usr/local/share/man/man1/jdwm.1`) and desktop file (`/usr/share/xsessions/jdwm.desktop`)
@@ -73,7 +73,7 @@ You can also customize your uninstall with uninstaller flags. To see a list of a
 
 Below are some examples of how these can be used and combined:
 
-<details><summary><b>Example: Only uninstall jdwm binaries (`jdwm`, `dwm-msg`, and `dwmblocks`)</b></summary>
+<details><summary><b>Example: Only uninstall jdwm binaries (`jdwm` and `dwm-msg`)</b></summary>
 
 ```bash
 ./install -jb
@@ -134,7 +134,6 @@ Also, if anyone would like to add more package managers or distros to this list,
 - [pactl](https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/CLI/#pactl) (Toggle mute on mic/sink binds)
 - [playerctl](https://github.com/altdesktop/playerctl) (Media control binds)
 - [pamixer](https://github.com/cdemoulins/pamixer) (Volume binds)
-- [xbacklight](https://www.x.org/releases/X11R7.6/doc/man/man1/xbacklight.1.xhtml) (For dwmblocks sb-battery screen brightness functionality)
 - [betterlockscreen](https://github.com/betterlockscreen/betterlockscreen) (For rofi powermenu script)
 - [rofi-calc](https://github.com/svenstaro/rofi-calc/tree/master?tab=readme-ov-file) (Calculator bind)
 - [Firefox](https://www.mozilla.org/en-US/firefox/new/) (jdwm.aliases, used as the default browser)
@@ -145,13 +144,13 @@ Also, if anyone would like to add more package managers or distros to this list,
 
 (Lacks [betterlockscreen](https://github.com/betterlockscreen/betterlockscreen) and [VSCodium](https://vscodium.com/) because they are AURs)
 ```bash
-sudo pacman -S jq xorg-xrandr dunst libpulse playerctl pamixer xorg-xbacklight rofi-calc firefox thunar
+sudo pacman -S jq xorg-xrandr dunst libpulse playerctl pamixer rofi-calc firefox thunar
 ```
 
 or
 
 ```bash
-yay -S jq xorg-xrandr dunst libpulse playerctl pamixer xorg-xbacklight betterlockscreen rofi-calc firefox vscodium-bin thunar
+yay -S jq xorg-xrandr dunst libpulse playerctl pamixer betterlockscreen rofi-calc firefox vscodium-bin thunar
 ```
 
 </details>

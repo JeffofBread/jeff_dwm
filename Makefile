@@ -57,16 +57,6 @@ JDWM_SCRIPTS_DIR = ${JDWM_SRC_DIR}/scripts
 JDWM_SRC := drw.c jdwm.c util.c
 JDWM_OBJ := ${addprefix ${JDWM_BUILD_DIR}/,${JDWM_SRC:.c=.o}}
 
-# dwmblocks dirs
-BLOCKS_SRC_DIR = ${CURDIR}/dwmblocks
-BLOCKS_BUILD_DIR = ${BLOCKS_SRC_DIR}/build
-BLOCKS_CONFIG_DIR = ${BLOCKS_SRC_DIR}/config
-BLOCKS_RESOURCES_DIR = ${BLOCKS_SRC_DIR}/resources
-BLOCKS_SCRIPTS_DIR = ${BLOCKS_SRC_DIR}/scripts
-
-BLOCKS_SRC := dwmblocks.c
-BLOCKS_OBJ := ${addprefix ${BLOCKS_BUILD_DIR}/,${BLOCKS_SRC:.c=.o}}
-
 # rofi diirs
 ROFI_DIR = ${CURDIR}/rofi
 ROFI_SCRIPTS_DIR = ${ROFI_DIR}/scripts
@@ -115,21 +105,6 @@ ${JDWM_CONFIG_DIR}/keydefs.h:
 	$Qcp ${JDWM_CONFIG_DIR}/keydefs.def.h $@
 	$Qchmod a=rw $@
 
-${BLOCKS_BUILD_DIR}/%.o: ${BLOCKS_SRC_DIR}/%.c | ${BLOCKS_BUILD_DIR}
-	$(PRINTF) "Compile dwmblocks source (${CC}) " $@
-	$Q${CC} -c ${CFLAGS} $< -o $@
-
-${BLOCKS_BUILD_DIR}:
-	$(PRINTF) "Make blocks build directory   " $@
-	$Qmkdir -p ${BLOCKS_BUILD_DIR}
-
-${BLOCKS_OBJ}: ${BLOCKS_CONFIG_DIR}/blocks.h
-
-${BLOCKS_CONFIG_DIR}/blocks.h:
-	$(PRINTF) "Copy dwmblocks default config " "cp blocks.def.h -> blocks.h"
-	$Qcp ${BLOCKS_CONFIG_DIR}/blocks.def.h $@
-	$Qchmod a=rw $@
-
 jdwm: ${JDWM_OBJ} ${JDWM_BUILD_DIR}
 	@if [ $(shell id -u) = 0 ]; then echo -e "\nMakefile needs to be run as non-root to collect $HOME bash variable. Cancelling make...\n"; exit 1; fi
 	$(PRINTF) "Linking jdwm source      (${CC}) " ${JDWM_BUILD_DIR}/jdwm
@@ -139,11 +114,7 @@ dwm-msg: ${JDWM_BUILD_DIR}/dwm-msg.o
 	$(PRINTF) "Linking dwm-msg source   (${CC}) " ${JDWM_BUILD_DIR}/$@
 	$Q${CC} -o ${JDWM_BUILD_DIR}/$@ $< ${LDFLAGS}
 
-dwmblocks: ${BLOCKS_OBJ} ${BLOCKS_BUILD_DIR}
-	$(PRINTF) "Linking dwmblocks source (${CC}) " ${JDWM_BUILD_DIR}/dwmblocks
-	$Q${CC} -o ${BLOCKS_BUILD_DIR}/$@ ${BLOCKS_OBJ} ${LDFLAGS}
-
-all: jdwm dwm-msg dwmblocks
+all: jdwm dwm-msg
 
 jdwm_clean:
 	$(PRINTF) "Clean build dir of jdwm       " $(JDWM_BUILD_DIR)
@@ -153,11 +124,7 @@ dwm-msg_clean:
 	$(PRINTF) "Clean build dir of dwm-msg    " $(JDWM_BUILD_DIR)
 	$Qrm -f ${JDWM_BUILD_DIR}/dwm-msg ${JDWM_BUILD_DIR}/dwm-msg.o
 
-dwmblocks_clean:
-	$(PRINTF) "Clean build dir of dwmblocks  " $(BLOCKS_BUILD_DIR)
-	$Qrm -f ${BLOCKS_BUILD_DIR}/dwmblocks ${BLOCKS_OBJ}
-
-clean: jdwm_clean dwm-msg_clean dwmblocks_clean
+clean: jdwm_clean dwm-msg_clean
 
 jdwm_install: jdwm
 	$(PRINTF) "Install jdwm binary           " ${DESTDIR}${PREFIX}/jdwm
@@ -171,13 +138,7 @@ dwm-msg_install: dwm-msg
 	$Qsudo cp -f ${JDWM_BUILD_DIR}/dwm-msg ${DESTDIR}${PREFIX}
 	$Qsudo chmod 755 ${DESTDIR}${PREFIX}/dwm-msg
 
-dwmblocks_install: dwmblocks
-	$(PRINTF) "Install dwmblocks binary      " ${DESTDIR}${PREFIX}/dwmblocks
-	$Qsudo mkdir -p ${DESTDIR}${PREFIX}
-	$Qsudo cp -f ${BLOCKS_BUILD_DIR}/dwmblocks ${DESTDIR}${PREFIX}
-	$Qsudo chmod 755 ${DESTDIR}${PREFIX}/dwmblocks
-
-install: jdwm_install dwm-msg_install dwmblocks_install
+install: jdwm_install dwm-msg_install
 
 jdwm_uninstall:
 	$(PRINTF) "Removing jdwm bin file    " ${DESTDIR}${PREFIX}/jdwm
@@ -187,10 +148,6 @@ dwm-msg_uninstall:
 	$(PRINTF) "Removing dwm-msg bin file     " ${DESTDIR}${PREFIX}/dwm-msg
 	$Qsudo rm -f ${DESTDIR}${PREFIX}/dwm-msg
 
-dwmblocks_uninstall:
-	$(PRINTF) "Removing dwmblocks bin file   " ${DESTDIR}${PREFIX}/dwmblocks
-	$Qsudo rm -f ${DESTDIR}${PREFIX}/dwmblocks
+uninstall: jdwm_uninstall dwm-msg_uninstall
 
-uninstall: jdwm_uninstall dwm-msg_uninstall dwmblocks_uninstall
-
-.PHONY: all jdwm_clean dwm-msg_clean blocks_clean clean jdwm_install dwm-msg_install dwmblocks_install install jdwm_uninstall dwm-msg_uninstall dwmblocks_uninstall uninstall
+.PHONY: all jdwm_clean dwm-msg_clean clean jdwm_install dwm-msg_install install jdwm_uninstall dwm-msg_uninstall uninstall

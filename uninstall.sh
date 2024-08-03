@@ -34,11 +34,6 @@ JDWM_SCRIPTS_DIR="$JDWM_DIR/scripts"
 
 ########################################################
 
-DWM_BLOCKS_DIR="$PARENT_DIR/dwmblocks"
-DWM_BLOCKS_SCRIPTS_DIR="$DWM_BLOCKS_DIR/scripts"
-
-########################################################
-
 JDWM_MAN_INSTALL_DIR=""
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     JDWM_MAN_INSTALL_DIR="$SHARE_DIR/man"
@@ -128,8 +123,8 @@ jdwm_scripts_uninstall(){
 }
 
 jdwm_configs_unlink(){
-    echo "Removing symlinks to autorun.h, binds.h, config.h, keydefs.h, and blocks.h from $JDWM_USER_CONFIG_DIR"
-    rm -f $JDWM_USER_CONFIG_DIR/autorun.h $JDWM_USER_CONFIG_DIR/binds.h $JDWM_USER_CONFIG_DIR/config.h $JDWM_USER_CONFIG_DIR/keydefs.h $JDWM_USER_CONFIG_DIR/blocks.h
+    echo "Removing symlinks to autorun.h, binds.h, config.h, and keydefs.h from $JDWM_USER_CONFIG_DIR"
+    rm -f $JDWM_USER_CONFIG_DIR/autorun.h $JDWM_USER_CONFIG_DIR/binds.h $JDWM_USER_CONFIG_DIR/config.h $JDWM_USER_CONFIG_DIR/keydefs.h
     echo ""
 }
 
@@ -137,10 +132,6 @@ jdwm_wallpapers_uninstall(){
     echo "Removing jdwm wallpapers directory: $JDWM_WALLPAPER_DIR"
     rm -rf $JDWM_WALLPAPER_DIR
     echo ""
-}
-
-dwmblocks_scripts_uninstall(){
-    file_uninstaller "sh" "$DWM_BLOCKS_SCRIPTS_DIR" "$BIN_INSTALL_DIR" "dwmblocks script" "1"
 }
 
 rofi_config_uninstall(){
@@ -220,11 +211,6 @@ print_help(){
     echo "                                      in ~/.config/jdwm and symlink to it"
     echo "                                      in /jdwm/dwm/themes/"
     echo ""
-    echo "   -bs, --dwmblocks-scripts           Uninstalls jdwm's dwmblocks"
-    echo "                                      scripts, meaning any .sh files found"
-    echo "                                      in both /jdwm/dwmblocks/scripts/"
-    echo "                                      and /usr/local/bin/"
-    echo ""
     echo "   -rc, --rofi-config                 Removes jdwm's rofi config file:"
     echo "                                      ~/.config/rofi/config.rasi"
     echo ""
@@ -248,8 +234,8 @@ print_usage(){
     echo "       [-jh] [--jdwm-home-dir][-jm] [--j-dwm-manual] [-jp]"
     echo "       [--jdwm-pathing-symlink] [-js] [--jdwm-scripts]"
     echo "       [-ju] [--jdwm-config-unlink] [-jw] [--jdwm-wallpapers]"
-    echo "       [-bs] [--dwmblocks-scripts] [-rc] [--rofi-config] [-rs]"
-    echo "       [--rofi-scripts] [-rt] [--rofi-themes]"
+    echo "       [-rc] [--rofi-config] [-rs]  [--rofi-scripts] [-rt]"
+    echo "       [--rofi-themes]"
     echo "" 
 }
 
@@ -313,11 +299,6 @@ while [[ $# -gt 0 ]]; do
             DEFAULT_UNINSTALL=0
             shift
             ;;
-        -bs|--dwmblocks-scripts)  # Only uninstalls dwmblocks scripts
-            dwm_blocks_scripts_uninstall
-            DEFAULT_UNINSTALL=0
-            shift
-            ;;
         -rc|--rofi-config)  # Only removes rofi config
             rofi_config_uninstall
             DEFAULT_UNINSTALL=0
@@ -362,7 +343,6 @@ if [[ $DEFAULT_UNINSTALL -eq 1 ]]; then
     jdwm_scripts_uninstall
     jdwm_desktop_file_uninstall
     jdwm_man_page_uninstall
-    dwmblocks_scripts_uninstall
     rofi_config_uninstall
     rofi_theme_uninstall
     rofi_scripts_uninstall
